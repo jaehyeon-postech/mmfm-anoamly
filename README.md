@@ -11,7 +11,7 @@ This is the official repository for our recent paper "Towards Zero-Shot Anomaly 
 - **[2025/04/25] 🔥 Anomaly-OV** is released and open to access. The implementation code and the contributed visual instruction tuning dataset & benchmark can be downloaded now. Please
 remember to cite the source papers of the raw datasets.
 
-## Models & Scripts
+## Models & Dataset & Scripts
 
 ### Installation
 
@@ -32,6 +32,11 @@ pip install accelerate==0.29.3
 pip install flash-attn==2.6.3 --no-build-isolation
 pip install pynvml
 ```
+
+### Dataset Download
+
+Please access the dataset and benchmark via our [project page](https://xujiacong.github.io/Anomaly-OV/). After downloading and unzipping the dataset
+
 ## Citation
 
 If you find our paper or this repository useful for your research and applications, please cite our paper:
