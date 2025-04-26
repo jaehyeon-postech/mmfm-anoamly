@@ -32,3 +32,62 @@ pip install accelerate==0.29.3
 pip install flash-attn==2.6.3 --no-build-isolation
 pip install pynvml
 ```
+## Citation
+
+If you find our paper or this repository useful for your research and applications, please cite our paper using this BibTeX:
+```bibtex
+@article{xu2025towards,
+  title={Towards Zero-Shot Anomaly Detection and Reasoning with Multimodal Large Language Models},
+  author={Xu, Jiacong and Lo, Shao-Yuan and Safaei, Bardia and Patel, Vishal M and Dwivedi, Isht},
+  journal={arXiv preprint arXiv:2502.07601},
+  year={2025}
+}
+```
+Please remember to cite the source papers for the datasets used in Anomaly-Instruct-125k and VisA-D&R:
+```bibtex
+@inproceedings{anomaly_shapenet,
+  title={Towards Scalable 3D Anomaly Detection and Localization: A Benchmark via 3D Anomaly Synthesis and A Self-Supervised Learning Network},
+  author={Li, Wenqiao and Xu, Xiaohao and Gu, Yao and Zheng, Bozhong and Gao, Shenghua and Wu, Yingna},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={22207--22216},
+  year={2024}
+}
+@inproceedings{real3d,
+  title={Real3D-{AD}: A Dataset of Point Cloud Anomaly Detection},
+  author={Jiaqi Liu and Guoyang Xie and ruitao chen and Xinpeng Li and Jinbao Wang and Yong Liu and Chengjie Wang and Feng Zheng},
+  booktitle={Thirty-seventh Conference on Neural Information Processing Systems Datasets and Benchmarks Track},
+  year={2023},
+  url={https://openreview.net/forum?id=zGthDp4yYe}
+}
+@inproceedings{mvtec3d,
+   title={The MVTec 3D-AD Dataset for Unsupervised 3D Anomaly Detection and Localization},
+   url={http://dx.doi.org/10.5220/0010865000003124},
+   DOI={10.5220/0010865000003124},
+   booktitle={Proceedings of the 17th International Joint Conference on Computer Vision, Imaging and Computer Graphics Theory and Applications},
+   publisher={SCITEPRESS - Science and Technology Publications},
+   author={Bergmann, Paul and Jin, Xin and Sattlegger, David and Steger, Carsten},
+   year={2022}
+}
+@inproceedings{mvtec,
+  title={MVTec AD--A comprehensive real-world dataset for unsupervised anomaly detection},
+  author={Bergmann, Paul and Fauser, Michael and Sattlegger, David and Steger, Carsten},
+  booktitle={Proceedings of the IEEE/CVF conference on computer vision and pattern recognition},
+  pages={9592--9600},
+  year={2019}
+}
+@inproceedings{visa,
+  title={Spot-the-difference self-supervised pre-training for anomaly detection and segmentation},
+  author={Zou, Yang and Jeong, Jongheon and Pemula, Latha and Zhang, Dongqing and Dabeer, Onkar},
+  booktitle={European Conference on Computer Vision},
+  pages={392--408},
+  year={2022},
+  organization={Springer}
+}
+@inproceedings{bmad,
+  title={Bmad: Benchmarks for medical anomaly detection},
+  author={Bao, Jinan and Sun, Hanshi and Deng, Hanqiu and He, Yinsheng and Zhang, Zhaoxiang and Li, Xingyu},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={4042--4053},
+  year={2024}
+}
+```
