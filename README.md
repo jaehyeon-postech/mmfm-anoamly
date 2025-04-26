@@ -17,14 +17,14 @@ remember to cite the source papers of the raw datasets.
 
 #### 1. **Clone this repository and navigate to the LLaVA folder:**
 ```bash
-git clone https://github.com/LLaVA-VL/LLaVA-NeXT
-cd LLaVA-NeXT
+git clone https://github.com/honda-research-institute/Anomaly-OneVision.git
+cd Anomaly-OneVision
 ```
 
 #### 2. **Install the inference package:**
 ```bash
-conda create -n llava python=3.10 -y
-conda activate llava
+conda create -n anomaly_ov python=3.10 -y
+conda activate anomaly_ov
 pip install --upgrade pip  # Enable PEP 660 support.
 pip install -e ".[train]"
 ```
