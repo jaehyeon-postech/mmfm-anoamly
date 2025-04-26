@@ -1,5 +1,5 @@
 <p align="center" width="100%">
-<img src="figs/ov_logo.png"  width="80%" height="80%">
+<img src="figs/ov_logo.png"  width="60%" height="60%">
 </p>
 
 # Anomaly-OV: Zero-shot Anomaly Detection & Reasoning
