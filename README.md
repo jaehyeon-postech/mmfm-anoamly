@@ -15,7 +15,7 @@ remember to cite the source papers of the raw datasets.
 
 ### Installation
 
-#### 1. **Clone this repository and navigate to the LLaVA folder:**
+#### 1. **Clone this repository and navigate to the Anomaly-OneVision folder:**
 ```bash
 git clone https://github.com/honda-research-institute/Anomaly-OneVision.git
 cd Anomaly-OneVision
