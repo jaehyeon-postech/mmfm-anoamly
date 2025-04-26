@@ -6,3 +6,25 @@
 This is the official repository for our recent paper "Towards Zero-Shot Anomaly Detection and Reasoning with Multimodal Large Language Models".
 [![arXiv](https://img.shields.io/badge/arXiv-2502.07601-red.svg)](https://arxiv.org/abs/2502.07601)
 [![Project Page](https://img.shields.io/badge/Project-Website-purple.svg)](https://xujiacong.github.io/Anomaly-OV/)
+
+## Release Notes
+- **[2025/04/25] 🔥 Anomaly-OV** is released and open to access. The implementation code and the contributed visual instruction tuning dataset & benchmark can be downloaded now. Please
+remember to cite the source papers of the raw datasets.
+
+## Models & Scripts
+
+### Installation
+
+#### 1. **Clone this repository and navigate to the LLaVA folder:**
+```bash
+git clone https://github.com/LLaVA-VL/LLaVA-NeXT
+cd LLaVA-NeXT
+```
+
+#### 2. **Install the inference package:**
+```bash
+conda create -n llava python=3.10 -y
+conda activate llava
+pip install --upgrade pip  # Enable PEP 660 support.
+pip install -e ".[train]"
+```
