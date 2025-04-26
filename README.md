@@ -34,7 +34,7 @@ pip install pynvml
 ```
 ## Citation
 
-If you find our paper or this repository useful for your research and applications, please cite our paper using this BibTeX:
+If you find our paper or this repository useful for your research and applications, please cite our paper:
 ```bibtex
 @article{xu2025towards,
   title={Towards Zero-Shot Anomaly Detection and Reasoning with Multimodal Large Language Models},
