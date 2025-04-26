@@ -91,3 +91,7 @@ Please remember to cite the source papers for the datasets used in Anomaly-Instr
   year={2024}
 }
 ```
+## Acknowledgement
+
+- [LLaVA-NeXT](https://github.com/LLaVA-VL/LLaVA-NeXT): the codebase we built upon, and our model are based on [LLaVA-OneVision](https://arxiv.org/abs/2408.03326). Thanks for their great work!
+- [LLaVA-OneVision Data](https://github.com/LLaVA-VL/LLaVA-NeXT/tree/main/scripts/train#about-the-llava-onevision-data): Part of our training data is selected from the open-sourced instruction tuning data used by LLaVA-OneVision.
