@@ -23,8 +23,12 @@ cd Anomaly-OneVision
 
 #### 2. **Install the inference package:**
 ```bash
+export CUDA_HOME=<your cuda home> # we use cuda-12.1
 conda create -n anomaly_ov python=3.10 -y
 conda activate anomaly_ov
 pip install --upgrade pip  # Enable PEP 660 support.
 pip install -e ".[train]"
+pip install accelerate==0.29.3
+pip install flash-attn==2.6.3 --no-build-isolation
+pip install pynvml
 ```
