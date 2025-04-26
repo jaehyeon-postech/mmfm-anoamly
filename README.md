@@ -93,5 +93,5 @@ Please remember to cite the source papers for the datasets used in Anomaly-Instr
 ```
 ## Acknowledgement
 
-- [LLaVA-NeXT](https://github.com/LLaVA-VL/LLaVA-NeXT): the codebase we built upon, and our model are based on [LLaVA-OneVision](https://arxiv.org/abs/2408.03326). Thanks for their great work!
-- [LLaVA-OneVision Data](https://github.com/LLaVA-VL/LLaVA-NeXT/tree/main/scripts/train#about-the-llava-onevision-data): Part of our training data is selected from the open-sourced instruction tuning data used by LLaVA-OneVision.
+- [LLaVA-NeXT](https://github.com/LLaVA-VL/LLaVA-NeXT): the codebase we built upon, and our model are based on [LLaVA-OneVision](https://arxiv.org/abs/2408.03326). For any questions regarding setting up the environment, please refer to the issues in their repository. Thanks for their great work!
+- [LLaVA-OneVision Data](https://github.com/LLaVA-VL/LLaVA-NeXT/tree/main/scripts/train#about-the-llava-onevision-data): Part of our training data is selected from the open-sourced instruction tuning data used by LLaVA-OneVision. The medical knowledge of Anomaly-OV is learned from the data collected by [LLaVA-Med](https://github.com/microsoft/LLaVA-Med).
