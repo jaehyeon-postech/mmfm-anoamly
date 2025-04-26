@@ -4,3 +4,4 @@
 
 # Anomaly-OV (CVPR 2025 Highlight)
 This is the official repository for our recent paper "Towards Zero-Shot Anomaly Detection and Reasoning with Multimodal Large Language Models".
+[![arXiv](https://img.shields.io/badge/arXiv-2502.07601-red.svg)](https://arxiv.org/abs/2502.07601)
