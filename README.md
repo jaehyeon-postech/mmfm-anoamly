@@ -40,6 +40,18 @@ pip install pynvml
 - Unzip the datasets inside the folder `data/` or `path-to-your-data/`.
 - Make sure to modify the **json_path** inside `data/datasets.yaml`.
 
+### Training
+#### 1. **Finetune Anomaly-OV-0.5B**
+```bash
+bash scripts/train/finetune_anomalyov_05b.sh
+```
+#### 2. **Finetune Anomaly-OV-7B**
+```bash
+bash scripts/train/finetune_anomalyov_7b.sh
+```
+
+### Inference
+
 ## Citation
 
 If you find our paper or this repository useful for your research and applications, please cite our paper:
