@@ -41,16 +41,32 @@ pip install pynvml
 - Make sure to modify the **json_path** inside `data/datasets.yaml`.
 
 ### Training
-#### 1. **Finetune Anomaly-OV-0.5B**
+#### 1. Finetune Anomaly-OV-0.5B
 ```bash
 bash scripts/train/finetune_anomalyov_05b.sh
 ```
-#### 2. **Finetune Anomaly-OV-7B**
+#### 2. Finetune Anomaly-OV-7B
 ```bash
 bash scripts/train/finetune_anomalyov_7b.sh
 ```
 
 ### Inference
+#### 1. Testing detection performance on VisA-D&R
+```bash
+python scripts/eval/test_detection.py -model_checkpoint path_to_your_checkpoint -size 7b 
+```
+#### 2. Testing reasoning performance on VisA-D&R
+```bash
+python scripts/eval/test_reasoning.py -model_checkpoint path_to_your_checkpoint -size 7b
+```
+#### 3. Single-image (2D) Chatting
+```bash
+python scripts/eval/test_chat_single.py -model_checkpoint path_to_your_checkpoint -size 7b -i figs/stop_sign.png
+```
+#### 4. Multiview images (3D) Chatting
+```bash
+python scripts/eval/test_chat_multi.py -model_checkpoint path_to_your_checkpoint -size 7b -i figs/bowl/
+```
 
 ## Citation
 
