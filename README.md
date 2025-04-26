@@ -21,7 +21,7 @@ git clone https://github.com/honda-research-institute/Anomaly-OneVision.git
 cd Anomaly-OneVision
 ```
 
-#### 2. **Install the inference package:**
+#### 2. **Install the inference and training package:**
 ```bash
 export CUDA_HOME=<your cuda home> # we use cuda-12.1
 conda create -n anomaly_ov python=3.10 -y
