@@ -37,7 +37,8 @@ pip install pynvml
 
 - Please access the dataset and benchmark via our [project page](https://xujiacong.github.io/Anomaly-OV/).
 - Check the [.yaml file](data/datasets.yaml) and download the extra data selected from [LLaVA-OneVision Data](https://github.com/LLaVA-VL/LLaVA-NeXT/tree/main/scripts/train#about-the-llava-onevision-data).
-- Unzip the datasets inside the folder `data/` or `path-to-your-data/` ()
+- Unzip the datasets inside the folder `data/` or `path-to-your-data/`.
+- Make sure to modify the **json_path** inside `data/datasets.yaml`.
 
 ## Citation
 
