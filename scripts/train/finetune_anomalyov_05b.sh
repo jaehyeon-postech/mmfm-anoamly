@@ -10,26 +10,22 @@ export OMP_NUM_THREADS=16
 #export NCCL_SOCKET_IFNAME=eth0
 #export NCCL_SHM_DISABLE=1
 
-LLM_VERSION="Qwen/Qwen2-7B-Instruct" 
-# for 7b model we recommend bs=1, accum=2, 16 nodes, 128 gpus, lr=1e-5, warmup=0.03
-# for 72b model we recommend bs=1, accum=1, 32 nodes, 256 gpus, lr=1e-5, warmup=0.03
+LLM_VERSION="Qwen/Qwen2-0.5B-Instruct" 
 LLM_VERSION_CLEAN="${LLM_VERSION//\//_}"
 VISION_MODEL_VERSION="google/siglip-so400m-patch14-384"
 VISION_MODEL_VERSION_CLEAN="${VISION_MODEL_VERSION//\//_}"
 
 ############### Pretrain ################
 
-BASE_RUN_NAME="anomaly_ov3_7B_only_llm_and_projector_reduced_data"
+BASE_RUN_NAME="anomalyov_05B_finetune_llm_and_projector_all_data"
 echo "BASE_RUN_NAME: ${BASE_RUN_NAME}"
 
 ############### Finetune ################
 
 # Stage 2
 PROMPT_VERSION="qwen_1_5"
-RUN_NAME="anomaly_ov3_7B_only_llm_and_projector_only_reduced_data" 
-#PREV_STAGE_CHECKPOINT="checkpoints/llava-onevision-qwen2-7b-ov"
-PREV_STAGE_CHECKPOINT="lmms-lab/llava-onevision-qwen2-7b-ov"
-#PREV_STAGE_CHECKPOINT="lmms-lab/llava-onevision-qwen2-0.5b-ov"
+RUN_NAME="anomalyov_05B_finetune_llm_and_projector_all_data" 
+PREV_STAGE_CHECKPOINT="lmms-lab/llava-onevision-qwen2-0.5b-ov"
 echo "PREV_STAGE_CHECKPOINT: ${PREV_STAGE_CHECKPOINT}"
 echo "MID_RUN_NAME: ${RUN_NAME}"
 
@@ -44,7 +40,7 @@ ACCELERATE_CPU_AFFINITY=1 CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 torchrun --nproc_
     --deepspeed scripts/zero2.json \
     --model_name_or_path $PREV_STAGE_CHECKPOINT \
     --version $PROMPT_VERSION \
-    --data_path /data/02/jiacong/data/our_datasets_reduced.yaml \
+    --data_path /data/02/jiacong/data/our_datasets2.yaml \
     --image_folder /data/02/jiacong/data \
     --video_folder None \
     --mm_tunable_parts="mm_mlp_adapter,mm_language_model" \
@@ -60,14 +56,14 @@ ACCELERATE_CPU_AFFINITY=1 CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 torchrun --nproc_
     --mm_patch_merge_type spatial_unpad \
     --bf16 True \
     --run_name $RUN_NAME \
-    --output_dir /data/02/jiacong/anomaly_detection/Anomaly_OV3_7b/checkpoints_reduced_data/$RUN_NAME \
+    --output_dir /data/02/jiacong/anomaly_detection/Anomaly_OneVision/checkpoints/$RUN_NAME \
     --num_train_epochs 1 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 2 \
-    --gradient_accumulation_steps 8 \
+    --gradient_accumulation_steps 2 \
     --evaluation_strategy "no" \
     --save_strategy "steps" \
-    --save_steps 400 \
+    --save_steps 1000 \
     --save_total_limit 1 \
     --learning_rate 1e-5 \
     --weight_decay 0. \
