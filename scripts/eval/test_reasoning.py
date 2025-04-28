@@ -25,7 +25,7 @@ def eval_model(args):
     device = "cuda"
     device_map = "auto"
     overwrite_config = {'vocab_size': 152064}
-    tokenizer, model, image_processor, max_length = load_pretrained_model(pretrained, None, model_name, device_map=device_map, cache_dir='/data/01/kdi/jiacong/cache', torch_dtype="bfloat16", overwrite_config=overwrite_config)
+    tokenizer, model, image_processor, max_length = load_pretrained_model(pretrained, None, model_name, device_map=device_map, cache_dir='/cache', torch_dtype="bfloat16", overwrite_config=overwrite_config)
     
     if args.size != '7b':
         model.lm_head.weight = model.model.embed_tokens.weight
