@@ -41,6 +41,7 @@ pip install pynvml
 - Make sure to modify the **json_path** inside `data/datasets.yaml`.
 
 ### Training
+Make sure to modify the argument `cache_dir` inside `TrainingArguments` of `llava/train/train.py`, so that your machine has enough space to store the pretrained weights.
 #### 1. Finetune Anomaly-OV-0.5B
 ```bash
 bash scripts/train/finetune_anomalyov_05b.sh
