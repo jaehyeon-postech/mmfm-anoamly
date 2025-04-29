@@ -64,7 +64,7 @@ python scripts/eval/test_reasoning.py --model_checkpoint path_to_your_checkpoint
 ```bash
 python scripts/eval/test_chat_single.py --model_checkpoint path_to_your_checkpoint --size 7b -i figs/stop_sign.png
 ```
-#### 4. Multiview images (3D) Chatting
+#### 4. Multiview images (3D) Chatting (TBD)
 ```bash
 python scripts/eval/test_chat_multi.py --model_checkpoint path_to_your_checkpoint --size 7b -i figs/bowl/
 ```
