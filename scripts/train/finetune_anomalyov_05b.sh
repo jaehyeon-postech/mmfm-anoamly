@@ -56,7 +56,7 @@ ACCELERATE_CPU_AFFINITY=1 CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 torchrun --nproc_
     --mm_patch_merge_type spatial_unpad \
     --bf16 True \
     --run_name $RUN_NAME \
-    --output_dir /data/02/jiacong/anomaly_detection/Anomaly_OneVision/checkpoints/$RUN_NAME \
+    --output_dir /data/02/jiacong/anomaly_detection/Anomaly-OneVision/checkpoints/$RUN_NAME \
     --num_train_epochs 1 \
     --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 2 \
