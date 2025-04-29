@@ -57,7 +57,7 @@ def eval_model(args):
         conv.append_message(conv.roles[1], None)
         return conv
 
-    image_path = 'image3.png'
+    image_path = args.image
 
     question_set = []
     history_questions = []
