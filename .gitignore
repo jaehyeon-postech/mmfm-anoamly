@@ -10,6 +10,12 @@ dist
 # *.json
 # *.jsonl
 
+anomaly_benchmark/
+anomaly_dataset/
+cache/
+pretrained_models/
+data/**
+
 # Data
 !**/alpaca-data-conversation.json
 # Editor
