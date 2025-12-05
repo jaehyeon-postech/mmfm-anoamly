@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from llava.model.builder import load_pretrained_model
+# from llava.model.builder import load_pretrained_model
 from llava.mm_utils import get_model_name_from_path, process_images, tokenizer_image_token
 from llava.constants import IMAGE_TOKEN_INDEX, DEFAULT_IMAGE_TOKEN, DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOKEN, IGNORE_INDEX
 from llava.conversation import conv_templates, SeparatorStyle
-
+from transformers import AutoTokenizer, LlavaOnevisionForConditionalGeneration, AutoProcessor
 from llava.model.anomaly_expert import AnomalyOV
 
 from PIL import Image
@@ -44,6 +44,12 @@ def _load_data_from_csv(csv_path: str):
 
 def eval_model(args):
     pretrained = args.model_checkpoint
+    if "anomaly" in pretrained :
+        use_anomaly = True
+    else:
+        use_anomaly = False
+
+
     model_name = "llava_qwen"
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -76,14 +82,54 @@ def eval_model(args):
         print("Testing 7B model, no need to set lm_head weight")
         anomaly_encoder_weight_path = './pretrained_expert_7b.pth'
 
-    anomaly_encoder = AnomalyOV()
-    anomaly_encoder.load_zero_shot_weights(path=anomaly_encoder_weight_path)
-    anomaly_encoder.freeze_layers()
-    anomaly_encoder.to(dtype=torch.bfloat16 if device == "cuda" else torch.float32, device=model.device)
-    anomaly_encoder.requires_grad_(False)
-    anomaly_encoder.eval()
+    if use_anomaly:
+        anomaly_encoder = AnomalyOV()
+        anomaly_encoder.load_zero_shot_weights(path=anomaly_encoder_weight_path)
+        anomaly_encoder.freeze_layers()
+        anomaly_encoder.to(dtype=torch.bfloat16 if device == "cuda" else torch.float32, device=model.device)
+        anomaly_encoder.requires_grad_(False)
+        anomaly_encoder.eval()
 
-    model.set_anomaly_encoder(anomaly_encoder)
+        model.set_anomaly_encoder(anomaly_encoder)
+    else:
+
+        model = LlavaOnevisionForConditionalGeneration.from_pretrained(
+            pretrained, torch_dtype=torch_dtype, device_map=device_map
+        )
+        processor = AutoProcessor.from_pretrained(pretrained)
+        # HF 경로에선 tokenizer를 processor에서 가져와 일관 디코딩
+        tokenizer = AutoTokenizer.from_pretrained(pretrained, use_fast=False)
+        model.eval()
+
+        # 생성기 함수 (HF 경로)
+        def run_inference(image: Image.Image) -> str:
+            # 동일 리사이즈 정책 유지(선택)
+            if max(image.size) > 1024:
+                if image.width > image.height:
+                    new_width = 1024
+                    new_height = int(1024 * image.height / image.width)
+                else:
+                    new_height = 1024
+                    new_width = int(1024 * image.width / image.height)
+                image = image.resize((new_width, new_height))
+
+            prompt = "Are there any defects for the object in the image? Please reply with 'Yes' or 'No'."
+            inputs = processor(
+                images=image,
+                text=prompt,
+                return_tensors="pt"
+            ).to(model.device)
+
+            with torch.no_grad():
+                out = model.generate(
+                    **inputs,
+                    do_sample=False,
+                    temperature=0,
+                    max_new_tokens=256,
+                )
+            text = tokenizer.batch_decode(out, skip_special_tokens=True)[0]
+            return text
+
     model.eval()
 
     responses = []
