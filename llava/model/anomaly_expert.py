@@ -25,7 +25,7 @@ class SingleHeadAttention(nn.Module):
         
         # 计算注意力得分: QK^T / sqrt(d_k)
         d_k = K.shape[-1]  # embed_dim
-        attention_scores = torch.matmul(Q, K.transpose(-2, -1)) / torch.sqrt(torch.tensor(d_k, dtype=torch.float32))
+        attention_scores = torch.matmul(Q, K.transpose(-2, -1)) / torch.sqrt(torch.tensor(d_k, dtype=Q.dtype))
         
         # 使用 softmax 对注意力得分进行归一化
         attention_weights = F.softmax(attention_scores, dim=-1)  # [batch_size, q_seq_len, kv_seq_len]
