@@ -11,6 +11,11 @@ Data format (JSON):
     {"image": "/abs/path/or/relative/to/image_folder/image.jpg", "label": 0},  # 0 = normal
     {"image": "/abs/path/or/relative/to/image_folder/image.jpg", "label": 1},  # 1 = anomaly
 ]
+
+Split strategy:
+    Train : train_normal[val_normal_count:] + syn_abnormal   (e.g. 4500 + 1000)
+    Val   : train_normal[:val_normal_count] + real_abnormal[:val_real_abnormal_count]  (e.g. 500 + 24)
+    Test  : test_normal + real_abnormal[val_real_abnormal_count:]   (e.g. 5000 + 92)
 """
 
 import os
@@ -56,13 +61,17 @@ class _VisionTowerCfg:
 # ---------------------------------------------------------------------------
 class AnomalyDataset(Dataset):
     """
-    JSON format:
+    Accepts either a path to a JSON file or a pre-built list of dicts.
+    JSON / list format:
         [{"image": "rel_or_abs_path", "label": 0 or 1}, ...]
     """
 
-    def __init__(self, data_path: str, image_folder: str, image_processor):
-        with open(data_path) as f:
-            self.data = json.load(f)
+    def __init__(self, data, image_folder: str, image_processor):
+        if isinstance(data, str):
+            with open(data) as f:
+                self.data = json.load(f)
+        else:
+            self.data = data
         self.image_folder = image_folder
         self.image_processor = image_processor
 
@@ -87,6 +96,68 @@ class AnomalyDataset(Dataset):
 
     def get_labels(self):
         return [d["label"] for d in self.data]
+
+
+# ---------------------------------------------------------------------------
+# Split builder
+# ---------------------------------------------------------------------------
+def build_splits(
+    train_normal_path, test_normal_path, syn_abnormal_path, real_abnormal_path,
+    train_normal_image_folder, test_normal_image_folder,
+    syn_abnormal_image_folder, real_abnormal_image_folder,
+    val_normal_count, train_real_abnormal_count, val_real_abnormal_count, seed,
+):
+    """
+    Loads 4 data sources, shuffles where needed, and returns (train, val, test) lists.
+
+    real_abnormal is allocated in order after shuffle:
+      [0 : train_real_abnormal_count]                                  -> train
+      [train_real_abnormal_count : train + val_real_abnormal_count]    -> val
+      [train + val_real_abnormal_count :]                              -> test
+
+    Train : train_normal[val_normal_count:] + syn_abnormal + real_abnormal[:train_real_abnormal_count]
+    Val   : train_normal[:val_normal_count] + real_abnormal[train_real_abnormal_count : train+val]
+    Test  : test_normal  + real_abnormal[train+val :]
+    """
+    def load_and_resolve(path, image_folder):
+        with open(path) as f:
+            data = json.load(f)
+        if image_folder:
+            data = [
+                {**item, "image": os.path.join(image_folder, item["image"])
+                         if not os.path.isabs(item["image"]) else item["image"]}
+                for item in data
+            ]
+        return data
+
+    rng = np.random.default_rng(seed)
+
+    train_normal  = load_and_resolve(train_normal_path,  train_normal_image_folder)
+    test_normal   = load_and_resolve(test_normal_path,   test_normal_image_folder)
+    syn_abnormal  = load_and_resolve(syn_abnormal_path,  syn_abnormal_image_folder)
+    real_abnormal = load_and_resolve(real_abnormal_path, real_abnormal_image_folder)
+
+    # shuffle before split (reproducible)
+    rng.shuffle(train_normal)
+    rng.shuffle(real_abnormal)
+
+    t = train_real_abnormal_count
+    v = train_real_abnormal_count + val_real_abnormal_count
+
+    train_data = train_normal[val_normal_count:] + syn_abnormal + real_abnormal[:t]
+    val_data   = train_normal[:val_normal_count] + real_abnormal[t:v]
+    test_data  = test_normal  + real_abnormal[v:]
+
+    def _log(name, data):
+        n_anom = sum(1 for d in data if d["label"] == 1)
+        logging.info(f"  {name:<6}: {len(data):5d} total  |  normal={len(data)-n_anom}, anomaly={n_anom}")
+
+    logging.info("Data splits:")
+    _log("Train", train_data)
+    _log("Val",   val_data)
+    _log("Test",  test_data)
+
+    return train_data, val_data, test_data
 
 
 # ---------------------------------------------------------------------------
@@ -179,8 +250,12 @@ def main(argv):
             name=FLAGS.wandb_run_name or None,
             entity=FLAGS.wandb_entity or None,
             config={
-                "data_path": FLAGS.data_path,
-                "test_data_path": FLAGS.test_data_path,
+                "train_normal_path": FLAGS.train_normal_path,
+                "test_normal_path": FLAGS.test_normal_path,
+                "syn_abnormal_path": FLAGS.syn_abnormal_path,
+                "real_abnormal_path": FLAGS.real_abnormal_path,
+                "val_normal_count": FLAGS.val_normal_count,
+                "val_real_abnormal_count": FLAGS.val_real_abnormal_count,
                 "vision_tower": FLAGS.vision_tower,
                 "pretrained_expert": FLAGS.pretrained_expert,
                 "num_epochs": FLAGS.num_epochs,
@@ -223,7 +298,18 @@ def main(argv):
     # 3. Dataset & DataLoader
     # ------------------------------------------------------------------
     image_processor = vision_tower.image_processor
-    dataset = AnomalyDataset(FLAGS.data_path, FLAGS.image_folder, image_processor)
+
+    train_data, val_data, test_data = build_splits(
+        FLAGS.train_normal_path, FLAGS.test_normal_path,
+        FLAGS.syn_abnormal_path, FLAGS.real_abnormal_path,
+        FLAGS.train_normal_image_folder, FLAGS.test_normal_image_folder,
+        FLAGS.syn_abnormal_image_folder, FLAGS.real_abnormal_image_folder,
+        FLAGS.val_normal_count, FLAGS.train_real_abnormal_count, FLAGS.val_real_abnormal_count,
+        FLAGS.seed,
+    )
+
+    # paths are already resolved in build_splits; pass image_folder=None
+    dataset = AnomalyDataset(train_data, None, image_processor)
 
     if FLAGS.balanced_sampling:
         labels_list = dataset.get_labels()
@@ -252,17 +338,20 @@ def main(argv):
             drop_last=True,
         )
 
-    test_dataloader = None
-    if FLAGS.test_data_path:
-        logging.info(f"Loading test dataset: {FLAGS.test_data_path}")
-        test_dataset = AnomalyDataset(FLAGS.test_data_path, FLAGS.test_image_folder, image_processor)
-        test_dataloader = DataLoader(
-            test_dataset,
-            batch_size=FLAGS.batch_size,
-            shuffle=False,
-            num_workers=FLAGS.num_workers,
-            pin_memory=True,
-        )
+    val_dataloader = DataLoader(
+        AnomalyDataset(val_data, None, image_processor),
+        batch_size=FLAGS.batch_size,
+        shuffle=False,
+        num_workers=FLAGS.num_workers,
+        pin_memory=True,
+    )
+    test_dataloader = DataLoader(
+        AnomalyDataset(test_data, None, image_processor),
+        batch_size=FLAGS.batch_size,
+        shuffle=False,
+        num_workers=FLAGS.num_workers,
+        pin_memory=True,
+    )
 
     # ------------------------------------------------------------------
     # 4. Optimizer & Scheduler
@@ -303,7 +392,7 @@ def main(argv):
     # ------------------------------------------------------------------
     logging.info("Starting training...")
     global_step = 0
-    best_metric = -float("inf")  # AUPRC; higher = better
+    best_metric = -float("inf")  # val AUPRC; higher = better
     best_metrics_log = {}  # stores all metrics at best epoch
 
     for epoch in range(1, FLAGS.num_epochs + 1):
@@ -400,54 +489,82 @@ def main(argv):
         }
 
         # ----------------------------------------------------------
-        # Test Evaluation
+        # Validation Evaluation (used for best model selection)
         # ----------------------------------------------------------
-        if test_dataloader is not None:
-            test_loss, test_acc, test_auroc, test_auprc, test_f1, test_tpr, test_fnr, test_tnr, test_fpr = evaluate(
-                anomaly_ov, vision_tower, test_dataloader, device, dtype
-            )
-            logging.info(
-                f"  [Test]  loss={test_loss:.4f}  |  acc={test_acc:.4f}  |  auroc={test_auroc:.4f}  |  auprc={test_auprc:.4f}  |  f1={test_f1:.4f}  |  "
-                f"tpr={test_tpr:.4f}  |  fnr={test_fnr:.4f}  |  tnr={test_tnr:.4f}  |  fpr={test_fpr:.4f}"
-            )
-            anomaly_ov.train()
-            epoch_log.update({
-                "test/loss": test_loss, "test/acc": test_acc, "test/auroc": test_auroc, "test/auprc": test_auprc, "test/f1": test_f1,
-                "test/tpr": test_tpr, "test/fnr": test_fnr, "test/tnr": test_tnr, "test/fpr": test_fpr,
-            })
+        val_loss, val_acc, val_auroc, val_auprc, val_f1, val_tpr, val_fnr, val_tnr, val_fpr = evaluate(
+            anomaly_ov, vision_tower, val_dataloader, device, dtype
+        )
+        logging.info(
+            f"  [Val]   loss={val_loss:.4f}  |  acc={val_acc:.4f}  |  auroc={val_auroc:.4f}  |  auprc={val_auprc:.4f}  |  f1={val_f1:.4f}  |  "
+            f"tpr={val_tpr:.4f}  |  fnr={val_fnr:.4f}  |  tnr={val_tnr:.4f}  |  fpr={val_fpr:.4f}"
+        )
+        anomaly_ov.train()
+        epoch_log.update({
+            "val/loss": val_loss, "val/acc": val_acc, "val/auroc": val_auroc, "val/auprc": val_auprc, "val/f1": val_f1,
+            "val/tpr": val_tpr, "val/fnr": val_fnr, "val/tnr": val_tnr, "val/fpr": val_fpr,
+        })
 
         if use_wandb:
             wandb.log(epoch_log, step=global_step)
 
         # ----------------------------------------------------------
-        # Best Checkpoint
+        # Best Checkpoint (based on val AUPRC — no test set leakage)
         # ----------------------------------------------------------
-        current_metric = test_auprc if test_dataloader is not None else train_auprc
-        if current_metric > best_metric:
-            best_metric = current_metric
-            best_metrics_log = {k.replace("test/", "best/").replace("train/", "best/"): v
-                                for k, v in epoch_log.items() if k.startswith(("test/", "train/"))}
+        if val_auprc > best_metric:
+            best_metric = val_auprc
+            best_metrics_log = {k.replace("val/", "best/"): v
+                                for k, v in epoch_log.items() if k.startswith("val/")}
             best_metrics_log["best/epoch"] = epoch
             if FLAGS.output_dir:
                 best_path = os.path.join(FLAGS.output_dir, "anomaly_ov_ft_best.pth")
                 torch.save(anomaly_ov.state_dict(), best_path)
-                metric_tag = "test_auprc" if test_dataloader is not None else "train_auprc"
-                logging.info(f"  [Best] {metric_tag}={current_metric:.4f}  ->  saved: {best_path}")
+                logging.info(f"  [Best] val_auprc={val_auprc:.4f}  ->  saved: {best_path}")
 
     logging.info("Training complete.")
 
+    # ------------------------------------------------------------------
+    # 6. Final Test Evaluation (once, using best checkpoint)
+    # ------------------------------------------------------------------
+    if FLAGS.output_dir:
+        best_path = os.path.join(FLAGS.output_dir, "anomaly_ov_ft_best.pth")
+        logging.info(f"Loading best checkpoint for final test evaluation: {best_path}")
+        anomaly_ov.load_state_dict(torch.load(best_path, map_location=device))
+
+    test_loss, test_acc, test_auroc, test_auprc, test_f1, test_tpr, test_fnr, test_tnr, test_fpr = evaluate(
+        anomaly_ov, vision_tower, test_dataloader, device, dtype
+    )
+    logging.info(
+        f"[Final Test]  loss={test_loss:.4f}  |  acc={test_acc:.4f}  |  auroc={test_auroc:.4f}  |  auprc={test_auprc:.4f}  |  f1={test_f1:.4f}  |  "
+        f"tpr={test_tpr:.4f}  |  fnr={test_fnr:.4f}  |  tnr={test_tnr:.4f}  |  fpr={test_fpr:.4f}"
+    )
+
     if use_wandb:
+        final_test_log = {
+            "final_test/loss": test_loss, "final_test/acc": test_acc,
+            "final_test/auroc": test_auroc, "final_test/auprc": test_auprc, "final_test/f1": test_f1,
+            "final_test/tpr": test_tpr, "final_test/fnr": test_fnr,
+            "final_test/tnr": test_tnr, "final_test/fpr": test_fpr,
+        }
         if best_metrics_log:
-            wandb.log(best_metrics_log)
+            final_test_log.update(best_metrics_log)
+        wandb.log(final_test_log)
         wandb.finish()
 
 
 if __name__ == "__main__":
-    # Data
-    flags.DEFINE_string('data_path', "./annotations/train_normal_particle.json", 'path to train annotation JSON file')
-    flags.DEFINE_string('image_folder', None, 'train image root directory (used for relative paths)')
-    flags.DEFINE_string('test_data_path', "./annotations/test_normal_real_particle.json", 'path to test annotation JSON file (optional)')
-    flags.DEFINE_string('test_image_folder', None, 'test image root directory (used for relative paths)')
+    # Data paths
+    flags.DEFINE_string('train_normal_path',    "./annotations/train_normal_particle.json",  'path to train normal annotation JSON')
+    flags.DEFINE_string('train_normal_image_folder', None, 'image root for train_normal (used for relative paths)')
+    flags.DEFINE_string('test_normal_path',     "./annotations/test_normal_particle.json",   'path to test normal annotation JSON')
+    flags.DEFINE_string('test_normal_image_folder',  None, 'image root for test_normal (used for relative paths)')
+    flags.DEFINE_string('syn_abnormal_path',    "./annotations/syn_abnormal_particle.json",  'path to synthetic anomaly annotation JSON')
+    flags.DEFINE_string('syn_abnormal_image_folder', None, 'image root for syn_abnormal (used for relative paths)')
+    flags.DEFINE_string('real_abnormal_path',   "./annotations/real_abnormal_particle.json", 'path to real anomaly annotation JSON')
+    flags.DEFINE_string('real_abnormal_image_folder', None, 'image root for real_abnormal (used for relative paths)')
+    # Split sizes
+    flags.DEFINE_integer('val_normal_count',           500, 'number of normal samples reserved for validation (from train_normal)')
+    flags.DEFINE_integer('train_real_abnormal_count',    0, 'number of real anomaly samples added to training (from real_abnormal); 0 = train on synthetic only')
+    flags.DEFINE_integer('val_real_abnormal_count',     12, 'number of real anomaly samples reserved for validation (from real_abnormal)')
     # Model
     flags.DEFINE_string('vision_tower', 'google/siglip-so400m-patch14-384', 'SigLIP model name or local path')
     flags.DEFINE_string('pretrained_expert', './pretrained_expert_7b.pth', 'pretrained AnomalyOV checkpoint (7b or 05b)')

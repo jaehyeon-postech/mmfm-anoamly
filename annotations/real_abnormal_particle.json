@@ -1,0 +1,466 @@
+[
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00001.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00002.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00003.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00004.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00005.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00006.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00007.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00008.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00009.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00010.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00011.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00012.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00013.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00014.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00015.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00016.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00017.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00018.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00019.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00020.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00021.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00022.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00023.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00024.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00025.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00026.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00027.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00028.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00029.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00030.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00031.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00032.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00033.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00034.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00035.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00036.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00037.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00038.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00039.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00040.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00041.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00042.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00043.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00044.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00045.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00046.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00047.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00048.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00049.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00050.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00051.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00052.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00053.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00054.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00055.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00056.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00057.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00058.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00059.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00060.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00061.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00062.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00063.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00064.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00065.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00066.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00067.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00068.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00069.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00070.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00071.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00072.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00073.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00074.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00075.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00076.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00077.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00078.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00079.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00080.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00081.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00082.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00083.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00084.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00085.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00086.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00087.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00088.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00089.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00090.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00091.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00092.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00093.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00094.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00095.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00096.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00097.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00098.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00099.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00100.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00101.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00102.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00103.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00104.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00105.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00106.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00107.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00108.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00109.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00110.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00111.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00112.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00113.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00114.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00115.png",
+    "label": 1
+  },
+  {
+    "image": "/home/shared/dataset/miic/miic_raw/Anomaly_test_png/abnormal_img/test_abnormal_00116.png",
+    "label": 1
+  }
+]
