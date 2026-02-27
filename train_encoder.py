@@ -265,6 +265,7 @@ def main(argv):
                 "grad_accum_steps": FLAGS.grad_accum_steps,
                 "scheduler": FLAGS.scheduler,
                 "warmup_steps": FLAGS.warmup_steps,
+                "eval_steps": FLAGS.eval_steps,
                 "bf16": FLAGS.bf16,
                 "seed": FLAGS.seed,
             },
@@ -445,6 +446,35 @@ def main(argv):
                 global_step += 1
                 if use_wandb:
                     wandb.log({"train/loss_step": loss.item(), "train/lr": scheduler.get_last_lr()[0]}, step=global_step)
+                if FLAGS.eval_steps > 0 and global_step % FLAGS.eval_steps == 0:
+                    val_loss, val_acc, val_auroc, val_auprc, val_f1, val_tpr, val_fnr, val_tnr, val_fpr = evaluate(
+                        anomaly_ov, vision_tower, val_dataloader, device, dtype
+                    )
+                    logging.info(
+                        f"  [Val@step {global_step}]  loss={val_loss:.4f}  |  acc={val_acc:.4f}  |  "
+                        f"auroc={val_auroc:.4f}  |  auprc={val_auprc:.4f}  |  f1={val_f1:.4f}  |  "
+                        f"tpr={val_tpr:.4f}  |  fnr={val_fnr:.4f}  |  tnr={val_tnr:.4f}  |  fpr={val_fpr:.4f}"
+                    )
+                    anomaly_ov.train()
+                    if use_wandb:
+                        wandb.log({
+                            "val/loss": val_loss, "val/acc": val_acc, "val/auroc": val_auroc,
+                            "val/auprc": val_auprc, "val/f1": val_f1,
+                            "val/tpr": val_tpr, "val/fnr": val_fnr, "val/tnr": val_tnr, "val/fpr": val_fpr,
+                            "epoch": epoch,
+                        }, step=global_step)
+                    if val_auprc > best_metric:
+                        best_metric = val_auprc
+                        best_metrics_log = {
+                            "best/loss": val_loss, "best/acc": val_acc, "best/auroc": val_auroc,
+                            "best/auprc": val_auprc, "best/f1": val_f1,
+                            "best/tpr": val_tpr, "best/fnr": val_fnr, "best/tnr": val_tnr, "best/fpr": val_fpr,
+                            "best/epoch": epoch,
+                        }
+                        if FLAGS.output_dir:
+                            best_path = os.path.join(FLAGS.output_dir, "anomaly_ov_ft_best.pth")
+                            torch.save(anomaly_ov.state_dict(), best_path)
+                            logging.info(f"  [Best] val_auprc={val_auprc:.4f}  ->  saved: {best_path}")
 
             # ----------------------------------------------------------
             # Accumulate predictions for epoch-level metrics
@@ -462,6 +492,35 @@ def main(argv):
             scheduler.step()
             optimizer.zero_grad()
             global_step += 1
+            if FLAGS.eval_steps > 0 and global_step % FLAGS.eval_steps == 0:
+                val_loss, val_acc, val_auroc, val_auprc, val_f1, val_tpr, val_fnr, val_tnr, val_fpr = evaluate(
+                    anomaly_ov, vision_tower, val_dataloader, device, dtype
+                )
+                logging.info(
+                    f"  [Val@step {global_step}]  loss={val_loss:.4f}  |  acc={val_acc:.4f}  |  "
+                    f"auroc={val_auroc:.4f}  |  auprc={val_auprc:.4f}  |  f1={val_f1:.4f}  |  "
+                    f"tpr={val_tpr:.4f}  |  fnr={val_fnr:.4f}  |  tnr={val_tnr:.4f}  |  fpr={val_fpr:.4f}"
+                )
+                anomaly_ov.train()
+                if use_wandb:
+                    wandb.log({
+                        "val/loss": val_loss, "val/acc": val_acc, "val/auroc": val_auroc,
+                        "val/auprc": val_auprc, "val/f1": val_f1,
+                        "val/tpr": val_tpr, "val/fnr": val_fnr, "val/tnr": val_tnr, "val/fpr": val_fpr,
+                        "epoch": epoch,
+                    }, step=global_step)
+                if val_auprc > best_metric:
+                    best_metric = val_auprc
+                    best_metrics_log = {
+                        "best/loss": val_loss, "best/acc": val_acc, "best/auroc": val_auroc,
+                        "best/auprc": val_auprc, "best/f1": val_f1,
+                        "best/tpr": val_tpr, "best/fnr": val_fnr, "best/tnr": val_tnr, "best/fpr": val_fpr,
+                        "best/epoch": epoch,
+                    }
+                    if FLAGS.output_dir:
+                        best_path = os.path.join(FLAGS.output_dir, "anomaly_ov_ft_best.pth")
+                        torch.save(anomaly_ov.state_dict(), best_path)
+                        logging.info(f"  [Best] val_auprc={val_auprc:.4f}  ->  saved: {best_path}")
 
         avg_loss = epoch_loss / len(dataloader)
         train_preds_np = np.array(train_preds)
@@ -489,36 +548,33 @@ def main(argv):
         }
 
         # ----------------------------------------------------------
-        # Validation Evaluation (used for best model selection)
+        # Validation Evaluation (epoch-end; skipped when eval_steps > 0)
         # ----------------------------------------------------------
-        val_loss, val_acc, val_auroc, val_auprc, val_f1, val_tpr, val_fnr, val_tnr, val_fpr = evaluate(
-            anomaly_ov, vision_tower, val_dataloader, device, dtype
-        )
-        logging.info(
-            f"  [Val]   loss={val_loss:.4f}  |  acc={val_acc:.4f}  |  auroc={val_auroc:.4f}  |  auprc={val_auprc:.4f}  |  f1={val_f1:.4f}  |  "
-            f"tpr={val_tpr:.4f}  |  fnr={val_fnr:.4f}  |  tnr={val_tnr:.4f}  |  fpr={val_fpr:.4f}"
-        )
-        anomaly_ov.train()
-        epoch_log.update({
-            "val/loss": val_loss, "val/acc": val_acc, "val/auroc": val_auroc, "val/auprc": val_auprc, "val/f1": val_f1,
-            "val/tpr": val_tpr, "val/fnr": val_fnr, "val/tnr": val_tnr, "val/fpr": val_fpr,
-        })
+        if FLAGS.eval_steps <= 0:
+            val_loss, val_acc, val_auroc, val_auprc, val_f1, val_tpr, val_fnr, val_tnr, val_fpr = evaluate(
+                anomaly_ov, vision_tower, val_dataloader, device, dtype
+            )
+            logging.info(
+                f"  [Val]   loss={val_loss:.4f}  |  acc={val_acc:.4f}  |  auroc={val_auroc:.4f}  |  auprc={val_auprc:.4f}  |  f1={val_f1:.4f}  |  "
+                f"tpr={val_tpr:.4f}  |  fnr={val_fnr:.4f}  |  tnr={val_tnr:.4f}  |  fpr={val_fpr:.4f}"
+            )
+            anomaly_ov.train()
+            epoch_log.update({
+                "val/loss": val_loss, "val/acc": val_acc, "val/auroc": val_auroc, "val/auprc": val_auprc, "val/f1": val_f1,
+                "val/tpr": val_tpr, "val/fnr": val_fnr, "val/tnr": val_tnr, "val/fpr": val_fpr,
+            })
+            if val_auprc > best_metric:
+                best_metric = val_auprc
+                best_metrics_log = {k.replace("val/", "best/"): v
+                                    for k, v in epoch_log.items() if k.startswith("val/")}
+                best_metrics_log["best/epoch"] = epoch
+                if FLAGS.output_dir:
+                    best_path = os.path.join(FLAGS.output_dir, "anomaly_ov_ft_best.pth")
+                    torch.save(anomaly_ov.state_dict(), best_path)
+                    logging.info(f"  [Best] val_auprc={val_auprc:.4f}  ->  saved: {best_path}")
 
         if use_wandb:
             wandb.log(epoch_log, step=global_step)
-
-        # ----------------------------------------------------------
-        # Best Checkpoint (based on val AUPRC — no test set leakage)
-        # ----------------------------------------------------------
-        if val_auprc > best_metric:
-            best_metric = val_auprc
-            best_metrics_log = {k.replace("val/", "best/"): v
-                                for k, v in epoch_log.items() if k.startswith("val/")}
-            best_metrics_log["best/epoch"] = epoch
-            if FLAGS.output_dir:
-                best_path = os.path.join(FLAGS.output_dir, "anomaly_ov_ft_best.pth")
-                torch.save(anomaly_ov.state_dict(), best_path)
-                logging.info(f"  [Best] val_auprc={val_auprc:.4f}  ->  saved: {best_path}")
 
     logging.info("Training complete.")
 
@@ -564,13 +620,13 @@ if __name__ == "__main__":
     # Split sizes
     flags.DEFINE_integer('val_normal_count',           500, 'number of normal samples reserved for validation (from train_normal)')
     flags.DEFINE_integer('train_real_abnormal_count',    0, 'number of real anomaly samples added to training (from real_abnormal); 0 = train on synthetic only')
-    flags.DEFINE_integer('val_real_abnormal_count',     12, 'number of real anomaly samples reserved for validation (from real_abnormal)')
+    flags.DEFINE_integer('val_real_abnormal_count',     0, 'number of real anomaly samples reserved for validation (from real_abnormal)')
     # Model
     flags.DEFINE_string('vision_tower', 'google/siglip-so400m-patch14-384', 'SigLIP model name or local path')
     flags.DEFINE_string('pretrained_expert', './pretrained_expert_7b.pth', 'pretrained AnomalyOV checkpoint (7b or 05b)')
     # Training
     flags.DEFINE_string( 'output_dir', None, 'directory to save checkpoints (skipped if not set)')
-    flags.DEFINE_integer('num_epochs', 10, 'number of training epochs')
+    flags.DEFINE_integer('num_epochs', 0, 'number of training epochs')
     flags.DEFINE_integer('batch_size', 64, 'batch size')
     flags.DEFINE_float(  'lr', 1e-4, 'learning rate')
     flags.DEFINE_float(  'weight_decay', 1e-4, 'AdamW weight decay')
@@ -578,6 +634,7 @@ if __name__ == "__main__":
     flags.DEFINE_integer('grad_accum_steps', 2, 'gradient accumulation steps')
     flags.DEFINE_string( 'scheduler', 'cosine', 'LR scheduler: cosine | cosine_restart | linear | constant')
     flags.DEFINE_integer('warmup_steps', 0, 'linear warmup optimizer steps before main scheduler kicks in')
+    flags.DEFINE_integer('eval_steps',   0, 'run validation every N global optimizer steps (0 = once per epoch)')
     flags.DEFINE_bool(   'balanced_sampling', True, 'use WeightedRandomSampler for 1:1 class balance (uses standard BCE instead of balanced BCE)')
     # Misc
     flags.DEFINE_bool('bf16', True, 'use bfloat16')
